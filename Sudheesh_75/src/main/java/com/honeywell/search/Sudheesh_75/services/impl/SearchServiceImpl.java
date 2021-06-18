@@ -25,24 +25,17 @@ public class SearchServiceImpl implements SearchService {
 
 
 	/**
-	 * Events which are matching to the searched key
+	 * Events which are matching to the searched key. If registered is true, the method searches from registered list else all events.
+	 * @param searchKey Key to search
+	 * @param isRegistered is registered by the user
+	 * @return List of events matching the criteria
 	 */
 	@Override
-	public List<Event> getEvents(String searchKey) {
-		LOGGER.debug("Entered getEvents method");
-		List<Event> filteredEvents = EventData.events.stream().filter(e->e.getName().contains(searchKey) || searchKey.equals(e.getLocation())).collect(Collectors.toList());
+	public List<Event> getEvents(String searchKey, boolean isRegistered) {
+		LOGGER.info("Entered getEvents method");
+		List<Event> searchList = isRegistered ? EventData.events.stream().filter(Event::isRegistered).collect(Collectors.toList()):EventData.events;
+		List<Event> filteredEvents = searchList.stream().filter(e-> e.getName().contains(searchKey) || searchKey.equals(e.getLocation())).collect(Collectors.toList());
 		LOGGER.debug("Returned list from all events : {}",filteredEvents);
-		return filteredEvents;
-	}
-	
-	/**
-	 * Events which are matching to the searched key and registed
-	 */
-	@Override
-	public List<Event> getEventsRegistered(String searchKey) {
-		LOGGER.debug("Entered getEvents method");
-		List<Event> filteredEvents = EventData.events.stream().filter(e->e.isRegistered() && (e.getName().contains(searchKey) || searchKey.equals(e.getLocation()))).collect(Collectors.toList());
-		LOGGER.debug("Returned list from registered : {}",filteredEvents);
 		return filteredEvents;
 	}
 

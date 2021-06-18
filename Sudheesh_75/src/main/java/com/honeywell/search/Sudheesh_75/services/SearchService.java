@@ -14,8 +14,6 @@ import com.honeywell.search.Sudheesh_75.dtos.Event;
 
 public interface SearchService {
 
-	List<Event> getEvents(String searchKey);
-
-	List<Event> getEventsRegistered(String searchKey);
+	List<Event> getEvents(String searchKey, boolean isRegistered);
 
 }

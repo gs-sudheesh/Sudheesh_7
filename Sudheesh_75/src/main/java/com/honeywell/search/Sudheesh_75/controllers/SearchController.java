@@ -23,28 +23,21 @@ import com.honeywell.search.Sudheesh_75.services.SearchService;
 
 @RestController
 public class SearchController {
-	
+
 	private static final Logger LOGGER = LogManager.getLogger(SearchController.class);
 
 	@Autowired
 	private SearchService searchService;
-	
+
 	@SuppressWarnings("unchecked")
-	@GetMapping("/searchRandom")
-	public List<Event> findEvents(@RequestParam(value = "key") String searchKey){
-		if(searchKey.isBlank()) {
+	@GetMapping("/search")
+	public List<Event> findEvents(@RequestParam(value = "key") String searchKey,
+			@RequestParam(value = "registered") boolean isRegistered) {
+		if (searchKey.isBlank()) {
 			LOGGER.error("Expected search value, found empty. Returning empty result");
 			return Collections.EMPTY_LIST;
 		}
-		return searchService.getEvents(searchKey);
+		return searchService.getEvents(searchKey, isRegistered);
 	}
-	
-	@GetMapping("/searchRegistered")
-	public List<Event> findRegisteredEvents(@RequestParam(value = "key") String searchKey){
-		if(searchKey.isBlank()) {
-			LOGGER.error("Expected search value, found empty. Returning empty result");
-			return Collections.EMPTY_LIST;
-		}
-		return searchService.getEventsRegistered(searchKey);
-	}
+
 }
